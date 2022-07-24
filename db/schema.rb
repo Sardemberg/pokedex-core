@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_08_013151) do
+ActiveRecord::Schema.define(version: 2022_07_08_234003) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "pokemons", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.decimal "height", precision: 5, scale: 2
+    t.integer "category_id", null: false
+    t.string "genrer"
+    t.json "abilities"
+    t.integer "type_id", null: false
+    t.json "evolutions"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_pokemons_on_category_id"
+    t.index ["type_id"], name: "index_pokemons_on_type_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -37,4 +58,6 @@ ActiveRecord::Schema.define(version: 2022_07_08_013151) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "pokemons", "categories"
+  add_foreign_key "pokemons", "types"
 end
