@@ -10,27 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_08_234003) do
+ActiveRecord::Schema.define(version: 2022_07_25_224824) do
 
-  create_table "categories", force: :cascade do |t|
+  create_table "abilities", force: :cascade do |t|
     t.string "name"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "pokemons", force: :cascade do |t|
     t.string "name"
-    t.text "description"
+    t.integer "types_id", null: false
     t.decimal "height", precision: 5, scale: 2
-    t.integer "category_id", null: false
-    t.string "genrer"
-    t.json "abilities"
-    t.integer "type_id", null: false
-    t.json "evolutions"
+    t.decimal "weight", precision: 5, scale: 2
+    t.text "description"
+    t.json "evolution"
+    t.json "states"
+    t.integer "abilities_id", null: false
+    t.json "weaknesses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_pokemons_on_category_id"
-    t.index ["type_id"], name: "index_pokemons_on_type_id"
+    t.index ["abilities_id"], name: "index_pokemons_on_abilities_id"
+    t.index ["types_id"], name: "index_pokemons_on_types_id"
+  end
+
+  create_table "types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,6 +66,6 @@ ActiveRecord::Schema.define(version: 2022_07_08_234003) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
-  add_foreign_key "pokemons", "categories"
-  add_foreign_key "pokemons", "types"
+  add_foreign_key "pokemons", "abilities", column: "abilities_id"
+  add_foreign_key "pokemons", "types", column: "types_id"
 end
